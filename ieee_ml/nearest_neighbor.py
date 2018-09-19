@@ -76,8 +76,8 @@ sess = tf.Session()
 
 
 #URL for the boston housing data in UCI repository is set to the variable
-if os.path.exists('housing_data.dat'):
-    housing_data=pickle.load(open('housing_data.dat', 'rb'))
+if os.path.exists('housing.data.dat'):
+    housing_file=pickle.load(open('housing.data', 'rb'))
 else:
     housing_url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/housing/housing.data'
     #the different features in the dataset
@@ -88,9 +88,9 @@ else:
     num_features = len(cols_used)
     #Using requests, load the url containing the dataset and fetch the data
     housing_file = requests.get(housing_url)
+    pickle.dump(housing_file,open('housing.data', 'wb') ) 
     #For each line withe length greater than 0, split the line based on space and store it in a 2-d list
-    housing_data = [[float(x) for x in y.split(' ') if len(x)>=1] for y in housing_file.text.split('\n') if len(y)>=1]
-    pickle.dump(housing_data,open('housing_data.dat', 'wb') ) 
+housing_data = [[float(x) for x in y.split(' ') if len(x)>=1] for y in housing_file.text.split('\n') if len(y)>=1]
 
 #retrieve the 13th value in each row of the 2-d list, convert it to a numpy array, take transpose to obtain n x 1 array
 y_vals = np.transpose([np.array([y[13] for y in housing_data])])
